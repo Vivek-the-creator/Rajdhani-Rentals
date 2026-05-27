@@ -4,6 +4,7 @@ import { useState, type ReactNode } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { equipmentCategories } from '../../data/equipment';
+import { isInquirySubmissionConfigured, submitInquiry } from '../../services/inquirySubmission';
 import { Button } from '../ui/Button';
 
 const schema = z.object({
@@ -27,6 +28,7 @@ interface InquiryFormProps {
 
 export function InquiryForm({ compact = false, includeStartDate = false }: InquiryFormProps) {
   const [success, setSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
   const {
     register,
     handleSubmit,
@@ -37,10 +39,20 @@ export function InquiryForm({ compact = false, includeStartDate = false }: Inqui
     defaultValues: { equipmentType: '' },
   });
 
-  const onSubmit = async () => {
-    await new Promise((resolve) => window.setTimeout(resolve, 450));
-    setSuccess(true);
-    reset();
+  const onSubmit = async (values: InquiryValues) => {
+    setSubmitError('');
+    try {
+      await submitInquiry(values);
+      setSuccess(true);
+      reset();
+    } catch {
+      setSuccess(false);
+      setSubmitError(
+        isInquirySubmissionConfigured()
+          ? 'We could not submit your inquiry right now. Please call or email us directly.'
+          : 'Inquiry submission is not configured yet. Add VITE_GOOGLE_SCRIPT_URL to .env.local and restart the dev server.',
+      );
+    }
   };
 
   const fieldClass =
@@ -51,6 +63,11 @@ export function InquiryForm({ compact = false, includeStartDate = false }: Inqui
       {success ? (
         <div className="rounded-md border border-emerald-300 bg-emerald-50 p-4 text-sm font-semibold text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950 dark:text-emerald-200">
           Thank you. Our rental team will contact you shortly.
+        </div>
+      ) : null}
+      {submitError ? (
+        <div className="rounded-md border border-red-300 bg-red-50 p-4 text-sm font-semibold text-red-800 dark:border-red-800 dark:bg-red-950 dark:text-red-200">
+          {submitError}
         </div>
       ) : null}
 
