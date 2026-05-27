@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import type { Equipment } from '../../types';
@@ -5,9 +6,16 @@ import { LazyImage } from '../ui/LazyImage';
 
 export function EquipmentCard({ item }: { item: Equipment }) {
   return (
-    <article className="group overflow-hidden rounded-lg border bg-white shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-industrial dark:bg-slate-950">
-      <div className="aspect-[4/3] overflow-hidden">
+    <motion.article
+      whileHover={{ y: -6 }}
+      whileTap={{ scale: 0.995 }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      className="group overflow-hidden rounded-lg border bg-white shadow-sm transition-shadow duration-300 hover:shadow-industrial dark:bg-slate-950"
+    >
+      <div className="relative aspect-[4/3] overflow-hidden">
         <LazyImage src={item.image} alt={item.name} className="h-full w-full transition duration-700 group-hover:scale-105" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-dark/45 via-transparent to-transparent opacity-0 transition duration-500 group-hover:opacity-100" />
+        <div className="absolute inset-y-0 -left-1/2 w-1/3 skew-x-[-18deg] bg-white/20 opacity-0 blur-sm transition duration-700 group-hover:left-[120%] group-hover:opacity-100" />
       </div>
       <div className="p-6">
         <div className="mb-4 flex items-center justify-between gap-3">
@@ -24,6 +32,6 @@ export function EquipmentCard({ item }: { item: Equipment }) {
           Learn More <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
-    </article>
+    </motion.article>
   );
 }

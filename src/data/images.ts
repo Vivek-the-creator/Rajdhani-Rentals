@@ -1,6 +1,10 @@
 export const images = {
+  heroLight:
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2200&q=88',
+  heroDark:
+    'https://images.unsplash.com/photo-1590496793929-36417d3117de?auto=format&fit=crop&w=2200&q=88',
   hero:
-    'https://images.unsplash.com/photo-1504917595217-d4dc5ebe6122?auto=format&fit=crop&w=2200&q=85',
+    'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=2200&q=88',
   about:
     'https://images.unsplash.com/photo-1581094794329-c8112a89af12?auto=format&fit=crop&w=1600&q=85',
   safety:

@@ -1,5 +1,6 @@
 import { Facebook, Instagram, Linkedin, Mail, MapPin, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import { contactInfo, navLinks } from '../../data/site';
 import { equipment } from '../../data/equipment';
 
@@ -11,8 +12,8 @@ export function Footer() {
       <div className="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
         <div>
           <div className="flex items-center gap-3">
-            <span className="grid h-11 w-11 place-items-center rounded-md bg-brand-yellow font-display text-lg font-extrabold text-brand-ink">
-              RR
+            <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-md bg-white p-1 shadow-sm">
+              <img src={logo} alt="Rajdhani Rentals LLP logo" className="h-full w-full object-contain drop-shadow-sm" />
             </span>
             <div>
               <p className="font-display text-xl font-extrabold">Rajdhani Rentals LLP</p>

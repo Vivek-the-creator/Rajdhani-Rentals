@@ -1,1 +1,0 @@
-import{j as o}from"./index-CoukJknc.js";function r({src:a,alt:e,className:s=""}){return o.jsx("img",{src:a,alt:e,loading:"lazy",decoding:"async",className:`bg-slate-100 object-cover dark:bg-slate-900 ${s}`})}export{r as L};

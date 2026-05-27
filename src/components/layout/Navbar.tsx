@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Menu, Moon, Phone, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import { useTheme } from '../../hooks/useTheme';
 import { navLinks } from '../../data/site';
 import { Button } from '../ui/Button';
@@ -9,6 +10,7 @@ import { Button } from '../ui/Button';
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const location = useLocation();
   const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
@@ -25,8 +27,8 @@ export function Navbar() {
     };
   }, [open]);
 
-  const linkClass = ({ isActive }: { isActive: boolean }) =>
-    `rounded-md px-3 py-2 text-sm font-semibold transition hover:text-brand-blue dark:hover:text-brand-yellow ${
+  const linkClass = (isActive: boolean) =>
+    `relative rounded-md px-3 py-2 text-sm font-semibold transition hover:text-brand-blue dark:hover:text-brand-yellow ${
       isActive ? 'text-brand-blue dark:text-brand-yellow' : 'text-slate-700 dark:text-slate-200'
     }`;
 
@@ -38,8 +40,8 @@ export function Navbar() {
     >
       <nav className="container-page flex h-20 items-center justify-between" aria-label="Main navigation">
         <NavLink to="/" className="focus-ring flex items-center gap-3 rounded-md" onClick={() => setOpen(false)}>
-          <span className="grid h-11 w-11 place-items-center rounded-md bg-brand-blue font-display text-lg font-extrabold text-white">
-            RR
+          <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-md transition dark:bg-white dark:p-1 dark:shadow-sm">
+            <img src={logo} alt="Rajdhani Rentals LLP logo" className="h-full w-full object-contain drop-shadow-sm" />
           </span>
           <span>
             <span className="block font-display text-lg font-extrabold leading-5 text-brand-ink dark:text-white">Rajdhani</span>
@@ -51,8 +53,15 @@ export function Navbar() {
 
         <div className="hidden items-center gap-1 lg:flex">
           {navLinks.map((link) => (
-            <NavLink key={link.path} to={link.path} className={linkClass}>
-              {link.label}
+            <NavLink key={link.path} to={link.path} className={() => linkClass(location.pathname === link.path)}>
+              <span className="relative z-10">{link.label}</span>
+              {location.pathname === link.path ? (
+                <motion.span
+                  layoutId="nav-active-indicator"
+                  className="absolute inset-x-2 bottom-1 h-0.5 rounded-full bg-brand-yellow"
+                  transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                />
+              ) : null}
             </NavLink>
           ))}
         </div>
@@ -101,14 +110,19 @@ export function Navbar() {
               transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="flex items-center justify-between">
-                <span className="font-display text-xl font-extrabold">Rajdhani Rentals</span>
+                <span className="flex items-center gap-3 font-display text-xl font-extrabold">
+                  <span className="grid h-11 w-11 place-items-center overflow-hidden rounded-md transition dark:bg-white dark:p-1 dark:shadow-sm">
+                    <img src={logo} alt="Rajdhani Rentals LLP logo" className="h-full w-full object-contain drop-shadow-sm" />
+                  </span>
+                  Rajdhani Rentals
+                </span>
                 <button type="button" className="focus-ring rounded-md p-2" onClick={() => setOpen(false)} aria-label="Close menu">
                   <X className="h-6 w-6" />
                 </button>
               </div>
               <div className="mt-8 grid gap-2">
                 {navLinks.map((link) => (
-                  <NavLink key={link.path} to={link.path} className={linkClass} onClick={() => setOpen(false)}>
+                  <NavLink key={link.path} to={link.path} className={({ isActive }) => linkClass(isActive)} onClick={() => setOpen(false)}>
                     {link.label}
                   </NavLink>
                 ))}
